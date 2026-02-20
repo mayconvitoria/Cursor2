@@ -1,0 +1,13 @@
+# Credenciais de deploy (nunca commitar)
+.env.deploy
+.env
+.env.local
+*.pem
+
+# Dependências e build
+node_modules/
+frontend/dist/
+
+# Logs e cache
+*.log
+.cache/

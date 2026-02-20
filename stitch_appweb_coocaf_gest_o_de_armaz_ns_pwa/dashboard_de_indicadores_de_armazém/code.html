@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard (Industrial Dark)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "industrial-bg": "#1e293b", // Slate 800 - Background
+                        "industrial-surface": "#0f172a", // Slate 900 - Surface/Cards
+                        "industrial-border": "#475569", // Slate 600 - High contrast borders
+                        "safety-orange": "#ff6d00", // Main accent
+                        "safety-orange-hover": "#e65100",
+                        "status-green": "#00e676", // Bright green
+                        "status-yellow": "#ffea00", // Bright yellow
+                        "status-red": "#ff1744", // Bright red
+                        "text-primary": "#f1f5f9", // Slate 100
+                        "text-secondary": "#94a3b8", // Slate 400
+                    },
+                    fontFamily: {
+                        "display": ["Roboto", "sans-serif"],
+                        "mono": ["Roboto Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px", // Sharper corners for industrial feel
+                        "sm": "2px",
+                        "md": "4px",
+                        "lg": "8px",
+                    },
+                    boxShadow: {
+                        'glow': '0 0 10px rgba(255, 109, 0, 0.2)',
+                        'glow-green': '0 0 8px rgba(0, 230, 118, 0.4)',
+                        'glow-red': '0 0 8px rgba(255, 23, 68, 0.4)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Roboto', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }input:focus, select:focus, textarea:focus, button:focus {
+            outline: 2px solid #ff6d00;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.2);
+        }.industrial-stripe {
+            background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-industrial-bg text-text-primary font-display min-h-screen antialiased selection:bg-safety-orange selection:text-white industrial-stripe">
+<nav class="sticky top-0 z-50 bg-industrial-surface border-b-2 border-industrial-border shadow-lg">
+<div class="px-6 py-4">
+<div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-5 w-full lg:w-auto">
+<div class="bg-safety-orange w-12 h-12 flex items-center justify-center rounded-sm shadow-glow shrink-0">
+<span class="material-icons text-white text-3xl">warehouse</span>
+</div>
+<div>
+<h1 class="text-2xl font-black tracking-wider uppercase text-white leading-tight">OPS DASHBOARD</h1>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-3 h-3 rounded-full bg-status-green shadow-glow-green animate-pulse"></span>
+<p class="text-xs text-safety-orange font-bold uppercase tracking-[0.2em]">System Online</p>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-4 w-full lg:w-auto justify-end">
+<div class="flex flex-col gap-1 w-full sm:w-auto">
+<label class="text-[10px] font-bold uppercase text-text-secondary tracking-wider" for="filial">Unidade Operacional</label>
+<div class="relative w-full sm:w-auto">
+<select class="w-full sm:w-64 bg-industrial-bg border-2 border-industrial-border text-white text-lg font-bold rounded-sm focus:ring-0 focus:border-safety-orange px-4 py-3 appearance-none uppercase tracking-wide cursor-pointer hover:border-text-secondary transition-colors" id="filial">
+<option>Matriz - São Paulo</option>
+<option>Filial - Curitiba</option>
+<option>Filial - Recife</option>
+<option>Filial - Goiânia</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-safety-orange">
+<span class="material-icons text-2xl">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1 w-full sm:w-auto">
+<label class="text-[10px] font-bold uppercase text-text-secondary tracking-wider" for="periodo">Competência</label>
+<input class="w-full sm:w-auto bg-industrial-bg border-2 border-industrial-border text-white text-lg font-bold rounded-sm focus:ring-0 focus:border-safety-orange px-4 py-3 uppercase cursor-pointer hover:border-text-secondary transition-colors" id="periodo" type="month" value="2023-10"/>
+</div>
+<button class="w-full sm:w-auto bg-safety-orange hover:bg-safety-orange-hover text-white px-8 py-4 rounded-sm text-lg font-black uppercase tracking-wider transition-all shadow-lg active:transform active:scale-95 flex items-center justify-center gap-2 border-b-4 border-[#bf360c] mt-auto h-[56px]">
+<span class="material-icons">sync</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main class="p-4 lg:p-8 max-w-[1920px] mx-auto space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<div class="bg-industrial-surface p-0 rounded-sm border-2 border-industrial-border hover:border-safety-orange transition-colors shadow-lg group relative overflow-hidden flex flex-col h-full">
+<div class="absolute top-0 left-0 w-2 h-full bg-blue-600"></div>
+<div class="p-6 pb-2 pl-8 flex justify-between items-start">
+<div>
+<h3 class="text-xl font-black uppercase text-white tracking-widest group-hover:text-blue-400 transition-colors">Recebimento</h3>
+<div class="mt-2 inline-flex items-center px-2 py-0.5 bg-blue-900/40 border border-blue-500/50 rounded-sm">
+<span class="text-[10px] font-bold text-blue-300 uppercase tracking-wide">Peso: 12%</span>
+</div>
+</div>
+<span class="material-icons text-industrial-border group-hover:text-blue-500 text-5xl transition-colors opacity-50 group-hover:opacity-100">call_received</span>
+</div>
+<div class="p-6 pl-8 pt-4 space-y-5 flex-1 flex flex-col justify-end">
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Volume Total</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">14.250 t</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Meta OK</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Tempo Médio</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">01:45h</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-yellow shadow-[0_0_8px_rgba(255,234,0,0.4)]"></span>
+<span class="text-[10px] text-status-yellow font-bold uppercase tracking-wider">Atenção</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Ocupação Doca</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">88%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Ideal</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-industrial-bg hover:bg-industrial-border/30 text-text-secondary hover:text-white py-3 border-t border-industrial-border uppercase text-xs font-bold tracking-widest transition-colors flex items-center justify-center gap-2">
+                    Detalhar <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="bg-industrial-surface p-0 rounded-sm border-2 border-industrial-border hover:border-safety-orange transition-colors shadow-lg group relative overflow-hidden flex flex-col h-full">
+<div class="absolute top-0 left-0 w-2 h-full bg-purple-600"></div>
+<div class="p-6 pb-2 pl-8 flex justify-between items-start">
+<div>
+<h3 class="text-xl font-black uppercase text-white tracking-widest group-hover:text-purple-400 transition-colors">Maquinação</h3>
+<div class="mt-2 inline-flex items-center px-2 py-0.5 bg-purple-900/40 border border-purple-500/50 rounded-sm">
+<span class="text-[10px] font-bold text-purple-300 uppercase tracking-wide">Peso: 18%</span>
+</div>
+</div>
+<span class="material-icons text-industrial-border group-hover:text-purple-500 text-5xl transition-colors opacity-50 group-hover:opacity-100">settings</span>
+</div>
+<div class="p-6 pl-8 pt-4 space-y-5 flex-1 flex flex-col justify-end">
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Dif. Despejo</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">0.45%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Normal</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Pó Gerado</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">2.1%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-red shadow-glow-red animate-pulse"></span>
+<span class="text-[10px] text-status-red font-bold uppercase tracking-wider">Crítico</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Rendimento</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">97.4%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Alto</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-industrial-bg hover:bg-industrial-border/30 text-text-secondary hover:text-white py-3 border-t border-industrial-border uppercase text-xs font-bold tracking-widest transition-colors flex items-center justify-center gap-2">
+                    Detalhar <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="bg-industrial-surface p-0 rounded-sm border-2 border-industrial-border hover:border-safety-orange transition-colors shadow-lg group relative overflow-hidden flex flex-col h-full">
+<div class="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
+<div class="p-6 pb-2 pl-8 flex justify-between items-start">
+<div>
+<h3 class="text-xl font-black uppercase text-white tracking-widest group-hover:text-amber-400 transition-colors">Estocagem</h3>
+<div class="mt-2 inline-flex items-center px-2 py-0.5 bg-amber-900/40 border border-amber-500/50 rounded-sm">
+<span class="text-[10px] font-bold text-amber-300 uppercase tracking-wide">Peso: 4%</span>
+</div>
+</div>
+<span class="material-icons text-industrial-border group-hover:text-amber-500 text-5xl transition-colors opacity-50 group-hover:opacity-100">inventory_2</span>
+</div>
+<div class="p-6 pl-8 pt-4 space-y-5 flex-1 flex flex-col justify-end">
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Ocupação</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">92.5%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-yellow shadow-[0_0_8px_rgba(255,234,0,0.4)]"></span>
+<span class="text-[10px] text-status-yellow font-bold uppercase tracking-wider">Alto Vol.</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Físico x Fiscal</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">0.02%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">OK</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Acuracidade</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">99.8%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Excel</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-industrial-bg hover:bg-industrial-border/30 text-text-secondary hover:text-white py-3 border-t border-industrial-border uppercase text-xs font-bold tracking-widest transition-colors flex items-center justify-center gap-2">
+                    Detalhar <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="bg-industrial-surface p-0 rounded-sm border-2 border-industrial-border hover:border-safety-orange transition-colors shadow-lg group relative overflow-hidden flex flex-col h-full">
+<div class="absolute top-0 left-0 w-2 h-full bg-teal-500"></div>
+<div class="p-6 pb-2 pl-8 flex justify-between items-start">
+<div>
+<h3 class="text-xl font-black uppercase text-white tracking-widest group-hover:text-teal-400 transition-colors">Embarque</h3>
+<div class="mt-2 inline-flex items-center px-2 py-0.5 bg-teal-900/40 border border-teal-500/50 rounded-sm">
+<span class="text-[10px] font-bold text-teal-300 uppercase tracking-wide">Peso: 10%</span>
+</div>
+</div>
+<span class="material-icons text-industrial-border group-hover:text-teal-500 text-5xl transition-colors opacity-50 group-hover:opacity-100">local_shipping</span>
+</div>
+<div class="p-6 pl-8 pt-4 space-y-5 flex-1 flex flex-col justify-end">
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Volume Emb.</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">12.100 t</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Meta OK</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Tempo Carga</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">02:10h</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Rápido</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Erros Exp.</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">0</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Zero</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-industrial-bg hover:bg-industrial-border/30 text-text-secondary hover:text-white py-3 border-t border-industrial-border uppercase text-xs font-bold tracking-widest transition-colors flex items-center justify-center gap-2">
+                    Detalhar <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="bg-industrial-surface p-0 rounded-sm border-2 border-industrial-border hover:border-safety-orange transition-colors shadow-lg group relative overflow-hidden flex flex-col h-full">
+<div class="absolute top-0 left-0 w-2 h-full bg-rose-600"></div>
+<div class="p-6 pb-2 pl-8 flex justify-between items-start">
+<div>
+<h3 class="text-xl font-black uppercase text-white tracking-widest group-hover:text-rose-400 transition-colors">Quebras</h3>
+<div class="mt-2 inline-flex items-center px-2 py-0.5 bg-rose-900/40 border border-rose-500/50 rounded-sm">
+<span class="text-[10px] font-bold text-rose-300 uppercase tracking-wide">Peso: 2%</span>
+</div>
+</div>
+<span class="material-icons text-industrial-border group-hover:text-rose-500 text-5xl transition-colors opacity-50 group-hover:opacity-100">broken_image</span>
+</div>
+<div class="p-6 pl-8 pt-4 space-y-5 flex-1 flex flex-col justify-end">
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Quebra Física</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">0.12%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Baixo</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">OEE Equip.</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">82%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-yellow shadow-[0_0_8px_rgba(255,234,0,0.4)]"></span>
+<span class="text-[10px] text-status-yellow font-bold uppercase tracking-wider">Atenção</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-industrial-bg hover:bg-industrial-border/30 text-text-secondary hover:text-white py-3 border-t border-industrial-border uppercase text-xs font-bold tracking-widest transition-colors flex items-center justify-center gap-2">
+                    Detalhar <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="bg-industrial-surface p-0 rounded-sm border-2 border-industrial-border hover:border-safety-orange transition-colors shadow-lg group relative overflow-hidden flex flex-col h-full">
+<div class="absolute top-0 left-0 w-2 h-full bg-orange-600"></div>
+<div class="p-6 pb-2 pl-8 flex justify-between items-start">
+<div>
+<h3 class="text-xl font-black uppercase text-white tracking-widest group-hover:text-orange-400 transition-colors">Maquinário</h3>
+<div class="mt-2 inline-flex items-center px-2 py-0.5 bg-orange-900/40 border border-orange-500/50 rounded-sm">
+<span class="text-[10px] font-bold text-orange-300 uppercase tracking-wide">Peso: 5%</span>
+</div>
+</div>
+<span class="material-icons text-industrial-border group-hover:text-orange-500 text-5xl transition-colors opacity-50 group-hover:opacity-100">precision_manufacturing</span>
+</div>
+<div class="p-6 pl-8 pt-4 space-y-5 flex-1 flex flex-col justify-end">
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Consumo/Hora</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">4.2 L/h</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Eficiente</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Disponib.</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">91%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Alta</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-industrial-bg hover:bg-industrial-border/30 text-text-secondary hover:text-white py-3 border-t border-industrial-border uppercase text-xs font-bold tracking-widest transition-colors flex items-center justify-center gap-2">
+                    Detalhar <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="bg-industrial-surface p-0 rounded-sm border-2 border-industrial-border hover:border-safety-orange transition-colors shadow-lg group relative overflow-hidden flex flex-col h-full">
+<div class="absolute top-0 left-0 w-2 h-full bg-red-600"></div>
+<div class="p-6 pb-2 pl-8 flex justify-between items-start">
+<div>
+<h3 class="text-xl font-black uppercase text-white tracking-widest group-hover:text-red-500 transition-colors">Segurança</h3>
+<div class="mt-2 inline-flex items-center px-2 py-0.5 bg-red-900/40 border border-red-500/50 rounded-sm">
+<span class="text-[10px] font-bold text-red-300 uppercase tracking-wide">Peso: 3%</span>
+</div>
+</div>
+<span class="material-icons text-industrial-border group-hover:text-red-500 text-5xl transition-colors opacity-50 group-hover:opacity-100">security</span>
+</div>
+<div class="p-6 pl-8 pt-4 space-y-5 flex-1 flex flex-col justify-end">
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Incidentes</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">0</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Zero Acid.</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Dias s/ acid.</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">412</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Recorde</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-industrial-bg hover:bg-industrial-border/30 text-text-secondary hover:text-white py-3 border-t border-industrial-border uppercase text-xs font-bold tracking-widest transition-colors flex items-center justify-center gap-2">
+                    Detalhar <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="bg-industrial-surface p-0 rounded-sm border-2 border-industrial-border hover:border-safety-orange transition-colors shadow-lg group relative overflow-hidden flex flex-col h-full">
+<div class="absolute top-0 left-0 w-2 h-full bg-gray-500"></div>
+<div class="p-6 pb-2 pl-8 flex justify-between items-start">
+<div>
+<h3 class="text-xl font-black uppercase text-white tracking-widest group-hover:text-gray-300 transition-colors">Gestão</h3>
+<div class="mt-2 inline-flex items-center px-2 py-0.5 bg-gray-700/40 border border-gray-400/50 rounded-sm">
+<span class="text-[10px] font-bold text-gray-300 uppercase tracking-wide">Peso: 13%</span>
+</div>
+</div>
+<span class="material-icons text-industrial-border group-hover:text-gray-400 text-5xl transition-colors opacity-50 group-hover:opacity-100">payments</span>
+</div>
+<div class="p-6 pl-8 pt-4 space-y-5 flex-1 flex flex-col justify-end">
+<div class="flex justify-between items-end border-b border-industrial-border/50 pb-2 border-dashed">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Absenteísmo</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">2.4%</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-green shadow-glow-green"></span>
+<span class="text-[10px] text-status-green font-bold uppercase tracking-wider">Baixo</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-text-secondary uppercase tracking-wider">Custo Oper.</span>
+<div class="flex flex-col items-end">
+<span class="text-2xl font-black text-white font-mono tracking-tight">R$ 412k</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="w-2.5 h-2.5 rounded-full bg-status-red shadow-glow-red animate-pulse"></span>
+<span class="text-[10px] text-status-red font-bold uppercase tracking-wider">Alto</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-industrial-bg hover:bg-industrial-border/30 text-text-secondary hover:text-white py-3 border-t border-industrial-border uppercase text-xs font-bold tracking-widest transition-colors flex items-center justify-center gap-2">
+                    Detalhar <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-4 bg-industrial-surface rounded-sm border-2 border-industrial-border shadow-lg">
+<div class="flex items-center justify-between p-6 border-b border-industrial-border bg-industrial-bg/50">
+<h3 class="font-black text-white uppercase tracking-widest text-sm">Performance Global</h3>
+<span class="material-icons text-text-secondary">radar</span>
+</div>
+<div class="p-6 flex flex-col items-center justify-center">
+<div class="relative w-full max-w-[300px] aspect-square flex items-center justify-center bg-industrial-bg rounded-full border border-industrial-border/30 overflow-hidden shadow-inner">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-3/4 h-3/4 border border-industrial-border/30 rounded-full flex items-center justify-center">
+<div class="w-2/3 h-2/3 border border-industrial-border/30 rounded-full flex items-center justify-center">
+<div class="w-1/2 h-1/2 border border-industrial-border/30 rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="absolute w-full h-px bg-industrial-border/20 top-1/2 transform -translate-y-1/2"></div>
+<div class="absolute w-px h-full bg-industrial-border/20 left-1/2 transform -translate-x-1/2"></div>
+<div class="relative w-full h-full p-8 z-10">
+<svg class="w-full h-full drop-shadow-[0_0_15px_rgba(255,109,0,0.6)]" viewBox="0 0 100 100">
+<polygon fill="rgba(255,109,0,0.2)" points="50,10 85,35 75,85 25,85 15,35" stroke="#ff6d00" stroke-linejoin="round" stroke-width="3"></polygon>
+<circle cx="50" cy="10" fill="#ff6d00" r="2"></circle>
+<circle cx="85" cy="35" fill="#ff6d00" r="2"></circle>
+<circle cx="75" cy="85" fill="#ff6d00" r="2"></circle>
+<circle cx="25" cy="85" fill="#ff6d00" r="2"></circle>
+<circle cx="15" cy="35" fill="#ff6d00" r="2"></circle>
+</svg>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-2 w-full mt-6 text-xs font-bold text-text-secondary uppercase tracking-wider">
+<div class="flex justify-between border-b border-industrial-border/30 pb-1"><span>Receb.</span> <span class="text-white">92%</span></div>
+<div class="flex justify-between border-b border-industrial-border/30 pb-1"><span>Maquin.</span> <span class="text-white">88%</span></div>
+<div class="flex justify-between border-b border-industrial-border/30 pb-1"><span>Estoque</span> <span class="text-white">95%</span></div>
+<div class="flex justify-between border-b border-industrial-border/30 pb-1"><span>Embarq.</span> <span class="text-white">90%</span></div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 bg-industrial-surface rounded-sm border-2 border-industrial-border shadow-lg">
+<div class="flex items-center justify-between p-6 border-b border-industrial-border bg-industrial-bg/50">
+<h3 class="font-black text-white uppercase tracking-widest text-sm">Comparativo Unidades</h3>
+<div class="flex gap-4">
+<span class="flex items-center gap-2 text-[10px] font-bold uppercase text-text-secondary tracking-wider"><div class="w-3 h-3 bg-safety-orange rounded-sm"></div> Atual</span>
+<span class="flex items-center gap-2 text-[10px] font-bold uppercase text-text-secondary tracking-wider"><div class="w-3 h-3 bg-slate-600 rounded-sm"></div> Média</span>
+</div>
+</div>
+<div class="p-6 space-y-8">
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase text-white tracking-widest">
+<span class="flex items-center gap-2"><span class="material-icons text-[14px] text-safety-orange">star</span> Matriz SP</span>
+<span class="text-safety-orange font-mono text-sm">98.2%</span>
+</div>
+<div class="w-full h-6 bg-industrial-bg border border-industrial-border rounded-none overflow-hidden relative">
+<div class="absolute inset-0 w-full h-full flex justify-between px-1 z-0">
+<div class="w-px h-full bg-industrial-border/30"></div>
+<div class="w-px h-full bg-industrial-border/30"></div>
+<div class="w-px h-full bg-industrial-border/30"></div>
+<div class="w-px h-full bg-industrial-border/30"></div>
+</div>
+<div class="h-full bg-safety-orange relative z-10 flex items-center justify-end pr-2" style="width: 98%;">
+<span class="text-[10px] font-bold text-black uppercase tracking-wider">Top 1</span>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase text-text-secondary tracking-widest">
+<span>Filial Curitiba</span>
+<span class="font-mono text-sm text-white">85.4%</span>
+</div>
+<div class="w-full h-5 bg-industrial-bg border border-industrial-border rounded-none overflow-hidden">
+<div class="h-full bg-slate-600 hover:bg-slate-500 transition-colors" style="width: 85%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase text-text-secondary tracking-widest">
+<span>Filial Recife</span>
+<span class="font-mono text-sm text-white">91.1%</span>
+</div>
+<div class="w-full h-5 bg-industrial-bg border border-industrial-border rounded-none overflow-hidden">
+<div class="h-full bg-slate-600 hover:bg-slate-500 transition-colors" style="width: 91%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase text-text-secondary tracking-widest">
+<span>Filial Goiânia</span>
+<span class="font-mono text-sm text-white">78.9%</span>
+</div>
+<div class="w-full h-5 bg-industrial-bg border border-industrial-border rounded-none overflow-hidden">
+<div class="h-full bg-slate-600 hover:bg-slate-500 transition-colors" style="width: 78%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-3 bg-industrial-surface rounded-sm border-2 border-industrial-border shadow-lg flex flex-col">
+<div class="flex items-center justify-between p-6 border-b border-industrial-border bg-industrial-bg/50">
+<h3 class="font-black text-white uppercase tracking-widest text-sm">Log Operacional</h3>
+<span class="material-icons text-text-secondary">history_edu</span>
+</div>
+<div class="p-6 flex-1 flex flex-col gap-4">
+<textarea class="flex-1 w-full bg-industrial-bg border-2 border-industrial-border text-white rounded-sm p-4 text-base focus:ring-0 focus:border-safety-orange resize-none placeholder-text-secondary/50 font-mono leading-relaxed" placeholder="&gt; Aguardando entrada de dados..."></textarea>
+<button class="w-full bg-transparent hover:bg-safety-orange text-safety-orange hover:text-white border-2 border-safety-orange px-6 py-4 rounded-sm text-sm font-black uppercase tracking-widest transition-all shadow-md active:transform active:scale-95 flex items-center justify-center gap-2 group">
+<span class="material-icons group-hover:animate-bounce">save_alt</span>
+                        Gravar Registro
+                    </button>
+</div>
+</div>
+</div>
+<div class="bg-industrial-surface border-l-[6px] border-safety-orange rounded-sm p-6 flex items-start sm:items-center gap-6 shadow-lg relative overflow-hidden">
+<div class="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-industrial-bg to-transparent opacity-50 pointer-events-none"></div>
+<div class="bg-safety-orange/10 p-4 rounded-sm hidden sm:flex items-center justify-center border border-safety-orange/20">
+<span class="material-icons text-safety-orange text-4xl animate-pulse">notifications_active</span>
+</div>
+<div class="text-base text-text-secondary flex-1 z-10">
+<span class="font-black text-safety-orange uppercase tracking-widest block mb-2 text-sm">Alerta do Sistema:</span>
+<span class="text-white text-lg leading-relaxed">A unidade de São Paulo atingiu recorde histórico de acuracidade <strong class="text-status-green font-mono bg-status-green/10 px-2 py-0.5 rounded border border-status-green/30">(99.8%)</strong> e eficiência energética nas empilhadeiras.</span>
+</div>
+<button class="hidden lg:flex items-center gap-2 text-text-secondary hover:text-white uppercase text-xs font-bold tracking-widest border border-industrial-border hover:border-text-secondary px-4 py-2 rounded-sm transition-colors z-10">
+                Dispensar
+                <span class="material-icons text-sm">close</span>
+</button>
+</div>
+</main>
+<footer class="mt-8 py-10 px-6 text-center border-t-2 border-industrial-border bg-industrial-surface">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-xs text-text-secondary font-mono uppercase tracking-widest">© 2023 WMS OPS Dashboard. System Build 2.4.1 [DARK_MODE]</p>
+<div class="flex gap-6 text-text-secondary">
+<a class="hover:text-safety-orange transition-colors text-xs font-bold uppercase tracking-wider" href="#">Suporte</a>
+<a class="hover:text-safety-orange transition-colors text-xs font-bold uppercase tracking-wider" href="#">Documentação</a>
+<a class="hover:text-safety-orange transition-colors text-xs font-bold uppercase tracking-wider flex items-center gap-2" href="#">Status <span class="w-2 h-2 rounded-full bg-status-green"></span></a>
+</div>
+</div>
+</footer>
+
+</body></html>

@@ -1,0 +1,10 @@
+# Para deploy na VPS Hostinger via API (token): a API clona o repo e executa este compose.
+# O Dockerfile na raiz faz build do frontend dentro do container (não precisa commitar dist/).
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: unless-stopped

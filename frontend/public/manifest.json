@@ -1,0 +1,7 @@
+{
+  "name": "AppWeb Coocafé - Gestão de Armazéns",
+  "short_name": "Coocafé",
+  "theme_color": "#0f172a",
+  "display": "standalone",
+  "start_url": "/"
+}
