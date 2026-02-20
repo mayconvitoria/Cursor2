@@ -12,9 +12,3 @@ frontend/dist/
 *.log
 .cache/
 
-# Diversos
-*.md
-.gitignore
-stitch_appweb_coocaf_gest_o_de_armaz_ns_pwa/
-scripts
-.cursor
